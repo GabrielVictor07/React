@@ -1,40 +1,38 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+const API_URL = 'http://localhost:3000/tasks';
 
 export type Task = {
   id: number;
-  title: string;
+  descricao: string;
+  quantidade: number;
 };
 
-// Buscar todas as tarefas
 export const getTasks = async (): Promise<Task[]> => {
-  const stored = await AsyncStorage.getItem('tasks');
-  return stored ? JSON.parse(stored) : [];
+  const res = await fetch(API_URL);
+  return res.json();
 };
 
-// Buscar uma tarefa pelo ID
-export const getTask = async (id: string): Promise<Task | undefined> => {
-  const tasks = await getTasks();
-  return tasks.find(t => t.id.toString() === id);
+export const getTask = async (id: number): Promise<Task> => {
+  const res = await fetch(`${API_URL}/${id}`);
+  return res.json();
 };
 
-// Criar uma nova tarefa
-export const createTask = async (task: { title: string }): Promise<void> => {
-  const tasks = await getTasks();
-  const newTask = { id: Date.now(), ...task };
-  const updated = [...tasks, newTask];
-  await AsyncStorage.setItem('tasks', JSON.stringify(updated));
+export const createTask = async (task: { descricao: string; quantidade: number }) => {
+  await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(task),
+  });
 };
 
-// Atualizar uma tarefa existente
-export const updateTask = async (id: string, updatedTask: { title: string }): Promise<void> => {
-  const tasks = await getTasks();
-  const updated = tasks.map(t => t.id.toString() === id ? { ...t, ...updatedTask } : t);
-  await AsyncStorage.setItem('tasks', JSON.stringify(updated));
+export const updateTask = async (id: number, updatedTask: { descricao: string; quantidade: number }) => {
+  await fetch(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedTask),
+  });
 };
 
-// Deletar uma tarefa
-export const deleteTask = async (id: string): Promise<void> => {
-  const tasks = await getTasks();
-  const filtered = tasks.filter(t => t.id.toString() !== id);
-  await AsyncStorage.setItem('tasks', JSON.stringify(filtered));
+export const deleteTask = async (id: number) => {
+  const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Erro na resposta da API');
 };
