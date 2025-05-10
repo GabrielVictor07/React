@@ -1,9 +1,19 @@
 {
   "tasks": [
     {
-      "id": "5be1",
-      "descricao": "Calabresa",
-      "quantidade": 4
+      "id": "6bc5",
+      "descricao": "frango",
+      "quantidade": 1
+    },
+    {
+      "id": "597d",
+      "descricao": "calabresa",
+      "quantidade": 5
+    },
+    {
+      "id": "3f93",
+      "descricao": "bacon",
+      "quantidade": 5
     }
   ]
 }

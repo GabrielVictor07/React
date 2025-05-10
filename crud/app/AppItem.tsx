@@ -7,19 +7,25 @@ interface AppItemProps {
   descricao: string;
   quantidade: number;
   onDelete: () => void;
+  onEdit: () => void;
 }
 
-export default function AppItem({ descricao, quantidade, onDelete }: AppItemProps) {
+export default function AppItem({ descricao, quantidade, onDelete, onEdit }: AppItemProps) {
   return (
     <View style={styles.container}>
       <View style={styles.info}>
-        <Text style={styles.text}>🛒 {descricao}</Text>
+        <Text style={styles.text}>🛒 Produto: {descricao}</Text>
         <Text style={styles.text}>📦 Quantidade: {quantidade}</Text>
       </View>
 
-      <TouchableOpacity onPress={onDelete} style={[styles.button, styles.deleteButton]}>
-        <Ionicons name="trash" size={20} color="#fff" />
-      </TouchableOpacity>
+      <View style={styles.buttons}>
+        <TouchableOpacity onPress={onEdit} style={[styles.button, styles.editButton]}>
+          <Ionicons name="create" size={20} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onDelete} style={[styles.button, styles.deleteButton]}>
+          <Ionicons name="trash" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -42,12 +48,21 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: "#333",
+    fontWeight: 'bold'
+  },
+  buttons: {
+    flexDirection: "row",
+    gap: 8,
   },
   button: {
     padding: 8,
     borderRadius: 8,
+    marginLeft: 4,
+  },
+  editButton: {
+    backgroundColor: "#068003",
   },
   deleteButton: {
-    backgroundColor: "#D93600",
+    backgroundColor: "#fc1607",
   },
 });

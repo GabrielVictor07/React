@@ -25,14 +25,19 @@ export const createTask = async (task: { descricao: string; quantidade: number }
 };
 
 export const updateTask = async (id: number, updatedTask: { descricao: string; quantidade: number }) => {
-  await fetch(`${API_URL}/${id}`, {
+  const res = await fetch(`${API_URL}/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updatedTask),
   });
+
+  if (!res.ok) {
+    throw new Error('Erro ao atualizar a tarefa');
+  }
 };
 
 export const deleteTask = async (id: number) => {
-  const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+  const res = await fetch(`${API_URL}/${id}`, { 
+    method: 'DELETE' });
   if (!res.ok) throw new Error('Erro na resposta da API');
 };
